@@ -1,0 +1,53 @@
+{
+  "variants": {
+    "color=white": {
+      "model": "presents:present_white"
+    },
+    "color=orange": {
+      "model": "presents:present_orange"
+    },
+    "color=magenta": {
+      "model": "presents:present_magenta"
+    },
+    "color=light_blue": {
+      "model": "presents:present_light_blue"
+    },
+    "color=yellow": {
+      "model": "presents:present_yellow"
+    },
+    "color=lime": {
+      "model": "presents:present_lime"
+    },
+    "color=gray": {
+      "model": "presents:present_gray"
+    },
+    "color=pink": {
+      "model": "presents:present_pink"
+    },
+    "color=silver": {
+      "model": "presents:present_silver"
+    },
+    "color=cyan": {
+      "model": "presents:present_cyan"
+    },
+    "color=purple": {
+      "model": "presents:present_purple"
+    },
+    "color=blue": {
+      "model": "presents:present_blue"
+    },
+    "color=brown": {
+      "model": "presents:present_brown"
+    },
+    "color=green": {
+      "model": "presents:present_green"
+    },
+    "color=red": {
+      "model": "presents:present_red"
+    },
+    "color=black": {
+      "model": "presents:present_black"
+    }
+  }
+}
+
