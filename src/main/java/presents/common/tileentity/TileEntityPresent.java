@@ -1,15 +1,24 @@
 package presents.common.tileentity;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.dispenser.BehaviorProjectileDispense;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityDispenser;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -42,14 +51,26 @@ public class TileEntityPresent extends TileEntity {
         NBTTagList tagList = new NBTTagList();
         tagList.appendTag(fireworks);
         compound.setTag("Explosions", tagList);
-        world.makeFireworks(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 2, 0, compound);
+        world.makeFireworks(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0.3, 0, compound);
         return true;
     }
 
     public void spawnItems(World world, BlockPos pos) {
         for (ItemStack stack : inventory) {
             if (!stack.isEmpty()) {
-                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+                IBehaviorDispenseItem dispenseBehavior = BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(stack.getItem());
+                if (dispenseBehavior instanceof BehaviorProjectileDispense
+                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Item.getItemFromBlock(Blocks.TNT))
+                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.SPLASH_POTION)
+                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.LINGERING_POTION)
+                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.SPAWN_EGG)
+                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.FIREWORKS)
+                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.FIRE_CHARGE)) {
+                    VirtualDispenser dispenser = new VirtualDispenser(pos, world, stack);
+                    dispenseBehavior.dispense(dispenser, stack);
+                } else {
+                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+                }
             }
         }
     }
@@ -117,4 +138,62 @@ public class TileEntityPresent extends TileEntity {
         }
     }
 
+    private class VirtualDispenser implements IBlockSource {
+
+        private final BlockPos pos;
+
+        private final World world;
+
+        private final TileEntityDispenser dispenser;
+
+        public VirtualDispenser(BlockPos pos, World world, ItemStack stack) {
+            this.pos = pos;
+            this.world = world;
+            this.dispenser = new TileEntityDispenser();
+            dispenser.addItemStack(stack);
+        }
+
+        @Override
+        public double getX() {
+            return pos.getX() + 0.5;
+        }
+
+        @Override
+        public double getY() {
+            return pos.getY() + 0.5;
+        }
+
+        @Override
+        public double getZ() {
+            return pos.getZ() + 0.5;
+        }
+
+        @Override
+        public BlockPos getBlockPos() {
+            return pos;
+        }
+
+        @Override
+        public IBlockState getBlockState() {
+            return Blocks.DISPENSER.getDefaultState().withProperty(BlockDispenser.FACING, EnumFacing.UP);
+        }
+
+        public NonNullList<ItemStack> getInventory() {
+            NonNullList<ItemStack> result = NonNullList.withSize(dispenser.getSizeInventory(), ItemStack.EMPTY);
+            for (int i = 0; i < result.size(); i++) {
+                result.set(i, dispenser.getStackInSlot(i));
+            }
+            return result;
+        }
+
+        @Override
+        public <T extends TileEntity> T getBlockTileEntity() {
+            return (T) dispenser;
+        }
+
+        @Override
+        public World getWorld() {
+            return world;
+        }
+    }
 }

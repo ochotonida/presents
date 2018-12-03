@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DPD",
+    "PCP",
+    "DPD"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "dyeOrange"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "chestWood"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "item": "presents:present_empty",
+    "data": 1
+  }
+}

@@ -1,7 +1,6 @@
 package presents;
 
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemColored;
 import net.minecraft.item.crafting.IRecipe;
@@ -27,7 +26,7 @@ public class Presents {
     public static final String MODVERSION = "1.12.2-1.0.0";
 
     public static final Block PRESENT_BLOCK = new BlockPresent("present");
-    public static final Block EMPTY_PRESENT_BLOCK = new BlockPresentEmpty("present_empty").setCreativeTab(CreativeTabs.DECORATIONS);
+    public static final Block EMPTY_PRESENT_BLOCK = new BlockPresentEmpty("present_empty");
 
     public static final Item PRESENT_ITEM = new ItemColored(PRESENT_BLOCK, true).setRegistryName("present");
     public static final Item EMPTY_PRESENT_ITEM = new ItemColored(EMPTY_PRESENT_BLOCK, true).setRegistryName("present_empty");

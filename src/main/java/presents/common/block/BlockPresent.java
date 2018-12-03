@@ -2,10 +2,12 @@ package presents.common.block;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -24,6 +26,7 @@ public class BlockPresent extends BlockPresentEmpty implements ITileEntityProvid
     public BlockPresent(String name) {
         super(name);
         hasTileEntity = true;
+        boundingBox = new AxisAlignedBB(2.5/16D, 0/16D, 2.5/16D, 13.5/16D, 11/16D, 13.5/16D);
     }
 
     @Nullable
@@ -59,5 +62,9 @@ public class BlockPresent extends BlockPresentEmpty implements ITileEntityProvid
             return ((TileEntityPresent) tileEntity).makeFireworks(world, pos);
         }
         return false;
+    }
+
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, COLOR);
     }
 }
