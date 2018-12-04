@@ -49,7 +49,7 @@ public class BlockPresent extends BlockPresentEmpty implements ITileEntityProvid
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityPresent) {
-            ((TileEntityPresent) tileEntity).spawnItems(world, pos);
+            ((TileEntityPresent) tileEntity).spawnItems(world, pos, null);
         }
         world.removeTileEntity(pos);
         super.breakBlock(world, pos, state);
