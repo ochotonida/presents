@@ -1,8 +1,11 @@
 package presents.common.item.recipe;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFireworkCharge;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -29,6 +32,7 @@ public class RecipePresent extends net.minecraftforge.registries.IForgeRegistryE
 
         ItemStack emptyPresent = ItemStack.EMPTY;
         NBTTagCompound fireworks = null;
+        int tntAmount = 0;
 
         NonNullList<ItemStack> presentLoot = NonNullList.withSize(8, ItemStack.EMPTY);
         int listIndex = 0;
@@ -40,6 +44,10 @@ public class RecipePresent extends net.minecraftforge.registries.IForgeRegistryE
                 if (stack.getItem() == Presents.PRESENT_ITEM) {
                     return false;
                 }
+                if (stack.getItem() == Item.getItemFromBlock(Blocks.TNT)) {
+                    tntAmount++;
+                }
+
                 if (stack.getItem() == Presents.EMPTY_PRESENT_ITEM) {
                     if (!emptyPresent.isEmpty()) {
                         return false;
@@ -65,7 +73,7 @@ public class RecipePresent extends net.minecraftforge.registries.IForgeRegistryE
             }
         }
 
-        if (emptyPresent.isEmpty()) {
+        if (emptyPresent.isEmpty() || tntAmount > 1) {
             return false;
         }
 
