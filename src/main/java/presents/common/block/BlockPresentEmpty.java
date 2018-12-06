@@ -26,6 +26,7 @@ import static net.minecraft.block.state.BlockFaceShape.CENTER_BIG;
 @ParametersAreNonnullByDefault
 public class BlockPresentEmpty extends Block implements ITileEntityProvider {
 
+    @SuppressWarnings("WeakerAccess")
     protected AxisAlignedBB boundingBox;
 
     public BlockPresentEmpty(String name) {

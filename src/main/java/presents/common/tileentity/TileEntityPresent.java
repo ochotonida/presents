@@ -6,9 +6,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
@@ -23,6 +25,7 @@ import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -34,6 +37,7 @@ import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import presents.Presents;
+import presents.common.entity.EntityPresentPrimed;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -121,21 +125,31 @@ public class TileEntityPresent extends TileEntityPresentEmpty implements IInvent
         fillWithLoot(player);
         for (ItemStack stack : inventory) {
             if (!stack.isEmpty()) {
-                IBehaviorDispenseItem dispenseBehavior = BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(stack.getItem());
-                if (dispenseBehavior instanceof BehaviorProjectileDispense
-                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Item.getItemFromBlock(Blocks.TNT))
-                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.SPLASH_POTION)
-                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.LINGERING_POTION)
-                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.SPAWN_EGG)
-                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.FIREWORKS)
-                        || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.FIRE_CHARGE)) {
-                    VirtualDispenser dispenser = new VirtualDispenser(pos, world, stack);
-                    dispenseBehavior.dispense(dispenser, stack);
+                if (!dispenseItem(stack) && stack.getItem() == Item.getItemFromBlock(Blocks.TNT)) {
+                    // noinspection ConstantConditions
+                    EntityTNTPrimed presentPrimed = new EntityPresentPrimed(world, (double)((float)pos.getX() + 0.5F), (double)pos.getY(), (double)((float)pos.getZ() + 0.5F), player, getColor(), getRibbonColor());
+                    world.spawnEntity(presentPrimed);
+                    world.playSound(null, presentPrimed.posX, presentPrimed.posY, presentPrimed.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 } else {
                     InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
                 }
             }
         }
+    }
+
+    private boolean dispenseItem(ItemStack stack) {
+        IBehaviorDispenseItem dispenseBehavior = BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(stack.getItem());
+        if (dispenseBehavior instanceof BehaviorProjectileDispense
+                || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.SPLASH_POTION)
+                || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.LINGERING_POTION)
+                || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.SPAWN_EGG)
+                || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.FIREWORKS)
+                || dispenseBehavior == BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.getObject(Items.FIRE_CHARGE)) {
+            VirtualDispenser dispenser = new VirtualDispenser(pos, world, stack);
+            dispenseBehavior.dispense(dispenser, stack);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -336,6 +350,7 @@ public class TileEntityPresent extends TileEntityPresentEmpty implements IInvent
 
         @Override
         public <T extends TileEntity> T getBlockTileEntity() {
+            //noinspection unchecked
             return (T) dispenser;
         }
 

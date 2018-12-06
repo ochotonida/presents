@@ -51,8 +51,8 @@ public class RecipePresentDye extends net.minecraftforge.registries.IForgeRegist
         // vanilla spaghetti
         ItemStack presentStack = ItemStack.EMPTY;
         int[] colorValues = new int[3];
-        int i = 0;
-        int j = 0;
+        int largestValueSum = 0;
+        int dyeAmount = 0;
 
         for (int k = 0; k < inv.getSizeInventory(); ++k) {
             ItemStack stack = inv.getStackInSlot(k);
@@ -64,29 +64,30 @@ public class RecipePresentDye extends net.minecraftforge.registries.IForgeRegist
 
                     int colour = getColor(presentStack);
                     if (colour != EnumDyeColor.WHITE.getColorValue()) {
-                        float f = (float)(colour >> 16 & 255) / 255.0F;
-                        float f1 = (float)(colour >> 8 & 255) / 255.0F;
-                        float f2 = (float)(colour & 255) / 255.0F;
-                        i = (int)((float)i + Math.max(f, Math.max(f1, f2)) * 255.0F);
-                        colorValues[0] = (int)((float)colorValues[0] + f * 255.0F);
-                        colorValues[1] = (int)((float)colorValues[1] + f1 * 255.0F);
-                        colorValues[2] = (int)((float)colorValues[2] + f2 * 255.0F);
-                        ++j;
+                        float red = (float)(colour >> 16 & 255) / 255.0F;
+                        float green = (float)(colour >> 8 & 255) / 255.0F;
+                        float blue = (float)(colour & 255) / 255.0F;
+                        largestValueSum = (int)((float)largestValueSum + Math.max(red, Math.max(green, blue)) * 255.0F);
+                        colorValues[0] = (int)((float)colorValues[0] + red * 255.0F);
+                        colorValues[1] = (int)((float)colorValues[1] + green * 255.0F);
+                        colorValues[2] = (int)((float)colorValues[2] + blue * 255.0F);
+                        dyeAmount++;
                     }
                 } else {
                     if (!net.minecraftforge.oredict.DyeUtils.isDye(stack)) {
                         return ItemStack.EMPTY;
                     }
 
+                    // noinspection ConstantConditions
                     float[] afloat = net.minecraftforge.oredict.DyeUtils.colorFromStack(stack).get().getColorComponentValues();
-                    int l1 = (int)(afloat[0] * 255.0F);
-                    int i2 = (int)(afloat[1] * 255.0F);
-                    int j2 = (int)(afloat[2] * 255.0F);
-                    i += Math.max(l1, Math.max(i2, j2));
-                    colorValues[0] += l1;
-                    colorValues[1] += i2;
-                    colorValues[2] += j2;
-                    ++j;
+                    int red = (int)(afloat[0] * 255.0F);
+                    int green = (int)(afloat[1] * 255.0F);
+                    int blue = (int)(afloat[2] * 255.0F);
+                    largestValueSum += Math.max(red, Math.max(green, blue));
+                    colorValues[0] += red;
+                    colorValues[1] += green;
+                    colorValues[2] += blue;
+                    dyeAmount++;
                 }
             }
         }
@@ -95,17 +96,17 @@ public class RecipePresentDye extends net.minecraftforge.registries.IForgeRegist
             return ItemStack.EMPTY;
         }
         else {
-            int i1 = colorValues[0] / j;
-            int j1 = colorValues[1] / j;
-            int k1 = colorValues[2] / j;
-            float f3 = (float)i / (float)j;
-            float f4 = (float)Math.max(i1, Math.max(j1, k1));
-            i1 = (int)((float)i1 * f3 / f4);
-            j1 = (int)((float)j1 * f3 / f4);
-            k1 = (int)((float)k1 * f3 / f4);
-            int k2 = (i1 << 8) + j1;
-            k2 = (k2 << 8) + k1;
-            setColor(presentStack, k2);
+            int red = colorValues[0] / dyeAmount;
+            int green = colorValues[1] / dyeAmount;
+            int blue = colorValues[2] / dyeAmount;
+            float f3 = (float)largestValueSum / (float)dyeAmount;
+            float largestValue = (float)Math.max(red, Math.max(green, blue));
+            red = (int)((float)red * f3 / largestValue);
+            green = (int)((float)green * f3 / largestValue);
+            blue = (int)((float)blue * f3 / largestValue);
+            int color = (red << 8) + green;
+            color = (color << 8) + blue;
+            setColor(presentStack, color);
             return presentStack;
         }
     }
