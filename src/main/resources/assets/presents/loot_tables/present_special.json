@@ -3,7 +3,7 @@
     {
       "name": "presents:present_special",
       "rolls": {
-        "min": 3,
+        "min": 2,
         "max": 8
       },
       "entries": [

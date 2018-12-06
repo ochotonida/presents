@@ -13,11 +13,12 @@ import presents.common.world.gen.WorldGenPresentTree;
 public class CommonEventHandler {
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public static void onBiomeDecorate(DecorateBiomeEvent.Decorate event) {
         if (event.getType() == DecorateBiomeEvent.Decorate.EventType.TREE) {
             Biome biome = event.getWorld().getBiome(event.getChunkPos().getBlock(0, 0, 0));
             WorldGenAbstractTree treeFeature = biome.getRandomTreeFeature(event.getRand());
-            if ((BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) || treeFeature instanceof WorldGenTaiga2 || treeFeature instanceof WorldGenTaiga1) && event.getRand().nextInt(32) == 0) {
+            if ((BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) || treeFeature instanceof WorldGenTaiga2 || treeFeature instanceof WorldGenTaiga1) && event.getRand().nextInt(24) == 0) {
                 int k6 = event.getRand().nextInt(16) + 8;
                 int l = event.getRand().nextInt(16) + 8;
                 WorldGenAbstractTree worldgenabstracttree = new WorldGenPresentTree(false);
