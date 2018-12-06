@@ -36,7 +36,7 @@ public class Presents {
 
     public static final String MODID = "presents";
     public static final String MODNAME = "Presents";
-    public static final String MODVERSION = "1.12.2-1.1.0";
+    public static final String MODVERSION = "1.12.2-1.2.0";
 
     public static final Block PRESENT_BLOCK = new BlockPresent("present");
     public static final Block EMPTY_PRESENT_BLOCK = new BlockPresentEmpty("present_empty");
@@ -55,6 +55,7 @@ public class Presents {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        proxy.preInit(event);
         LootTableList.register(LOOTTABLE_PRESENT_REGULAR);
         LootTableList.register(LOOTTABLE_PRESENT_SPECIAL);
     }
