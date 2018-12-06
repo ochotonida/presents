@@ -1,25 +1,30 @@
 package presents.common.block;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.BlockColored;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import presents.common.tileentity.TileEntityPresent;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static net.minecraft.block.state.BlockFaceShape.CENTER_BIG;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockPresentEmpty extends BlockColored {
+public class BlockPresentEmpty extends Block implements ITileEntityProvider {
 
     protected AxisAlignedBB boundingBox;
 
@@ -32,6 +37,12 @@ public class BlockPresentEmpty extends BlockColored {
         setResistance(0.5F);
         setSoundType(SoundType.CLOTH);
         boundingBox = new AxisAlignedBB(3/16D, 0/16D, 3/16D, 13/16D, 10/16D, 13/16D);
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new TileEntityPresent();
     }
 
     @Override

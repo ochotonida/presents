@@ -1,53 +1,10 @@
 {
-  "variants": {
-    "color=white": {
-      "model": "presents:empty_present_white"
-    },
-    "color=orange": {
-      "model": "presents:empty_present_orange"
-    },
-    "color=magenta": {
-      "model": "presents:empty_present_magenta"
-    },
-    "color=light_blue": {
-      "model": "presents:empty_present_light_blue"
-    },
-    "color=yellow": {
-      "model": "presents:empty_present_yellow"
-    },
-    "color=lime": {
-      "model": "presents:empty_present_lime"
-    },
-    "color=gray": {
-      "model": "presents:empty_present_gray"
-    },
-    "color=pink": {
-      "model": "presents:empty_present_pink"
-    },
-    "color=silver": {
-      "model": "presents:empty_present_silver"
-    },
-    "color=cyan": {
-      "model": "presents:empty_present_cyan"
-    },
-    "color=purple": {
-      "model": "presents:empty_present_purple"
-    },
-    "color=blue": {
-      "model": "presents:empty_present_blue"
-    },
-    "color=brown": {
-      "model": "presents:empty_present_brown"
-    },
-    "color=green": {
-      "model": "presents:empty_present_green"
-    },
-    "color=red": {
-      "model": "presents:empty_present_red"
-    },
-    "color=black": {
-      "model": "presents:empty_present_black"
-    }
+  "forge_marker": 1,
+  "defaults": {
+    "model": "presents:empty_present"
+  },
+  "variants" : {
+    "inventory": [{}],
+    "normal": [{}]
   }
 }
-

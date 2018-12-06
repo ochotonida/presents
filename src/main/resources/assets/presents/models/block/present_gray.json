@@ -1,8 +1,0 @@
-{
-  "parent": "presents:block/present",
-  "textures": {
-    "side": "presents:blocks/present_side_gray",
-    "lid": "presents:blocks/present_lid_gray",
-    "particle": "presents:blocks/present_lid_gray"
-  }
-}

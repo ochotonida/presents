@@ -2,7 +2,6 @@ package presents.common.block;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -51,7 +50,6 @@ public class BlockPresent extends BlockPresentEmpty implements ITileEntityProvid
         if (tileEntity instanceof TileEntityPresent) {
             ((TileEntityPresent) tileEntity).spawnItems(world, pos, null);
         }
-        world.removeTileEntity(pos);
         super.breakBlock(world, pos, state);
     }
 
@@ -62,9 +60,5 @@ public class BlockPresent extends BlockPresentEmpty implements ITileEntityProvid
             return ((TileEntityPresent) tileEntity).makeFireworks(world, pos);
         }
         return false;
-    }
-
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, COLOR);
     }
 }

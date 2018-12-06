@@ -2,7 +2,6 @@ package presents.common.item.recipe;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
@@ -23,7 +22,7 @@ public class RecipePresent extends net.minecraftforge.registries.IForgeRegistryE
     private ItemStack result = ItemStack.EMPTY;
 
     public RecipePresent() {
-        setRegistryName("recipepresent");
+        setRegistryName("recipe_present");
     }
 
     @Override
@@ -41,7 +40,7 @@ public class RecipePresent extends net.minecraftforge.registries.IForgeRegistryE
             ItemStack stack = inv.getStackInSlot(i);
 
             if (!stack.isEmpty()) {
-                if (stack.getItem() == Presents.PRESENT_ITEM) {
+                if (stack.getItem() == Presents.PRESENT_ITEM || net.minecraftforge.oredict.DyeUtils.isDye(stack)) {
                     return false;
                 }
                 if (stack.getItem() == Item.getItemFromBlock(Blocks.TNT)) {
@@ -78,8 +77,13 @@ public class RecipePresent extends net.minecraftforge.registries.IForgeRegistryE
         }
 
         result = new ItemStack(Presents.PRESENT_ITEM, 1, emptyPresent.getMetadata());
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        NBTTagCompound blockEntityTag = new NBTTagCompound();
+
+
+        NBTTagCompound tagCompound = emptyPresent.getTagCompound();
+        if (tagCompound == null) {
+            tagCompound = new NBTTagCompound();
+        }
+        NBTTagCompound blockEntityTag = tagCompound.getCompoundTag("BlockEntityTag");
         tagCompound.setTag("BlockEntityTag", blockEntityTag);
         result.setTagCompound(tagCompound);
 

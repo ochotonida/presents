@@ -1,28 +1,59 @@
 {
   "parent": "block/block",
+  "textures": {
+    "particle": "presents:blocks/present_empty",
+    "side": "presents:blocks/present_side",
+    "ribbon_side": "presents:blocks/present_side_ribbon",
+    "lid": "presents:blocks/present_lid",
+    "ribbon_lid": "presents:blocks/present_lid_ribbon"
+  },
   "elements": [
     {
       "from": [3, 0, 3],
       "to": [13, 8, 13],
       "faces": {
-        "north": {"uv": [3, 8, 13, 16], "texture": "#side"},
-        "east": {"uv": [3, 8, 13, 16], "texture": "#side"},
-        "south": {"uv": [3, 8, 13, 16], "texture": "#side"},
-        "west": {"uv": [3, 8, 13, 16], "texture": "#side"},
-        "up": {"uv": [3, 3, 13, 13], "texture": "#lid"},
-        "down": {"uv": [3, 3, 13, 13], "texture": "#lid"}
+        "north": {"uv": [3, 8, 13, 16], "texture": "#side", "tintindex": 0},
+        "east": {"uv": [3, 8, 13, 16], "texture": "#side", "tintindex": 0},
+        "south": {"uv": [3, 8, 13, 16], "texture": "#side", "tintindex": 0},
+        "west": {"uv": [3, 8, 13, 16], "texture": "#side", "tintindex": 0},
+        "up": {"uv": [3, 3, 13, 13], "texture": "#lid", "tintindex": 0},
+        "down": {"uv": [3, 3, 13, 13], "texture": "#lid", "tintindex": 0}
       }
     },
     {
       "from": [2.5, 8, 2.5],
       "to": [13.5, 11, 13.5],
       "faces": {
-        "north": {"uv": [2, 5, 14, 8], "texture": "#side"},
-        "east": {"uv": [2, 5, 14, 8], "texture": "#side"},
-        "south": {"uv": [2, 5, 14, 8], "texture": "#side"},
-        "west": {"uv": [2, 5, 14, 8], "texture": "#side"},
-        "up": {"uv": [2, 2, 14, 14], "texture": "#lid"},
-        "down": {"uv": [2, 2, 14, 14], "texture": "#lid"}
+        "north": {"uv": [2, 5, 14, 8], "texture": "#side", "tintindex": 0},
+        "east": {"uv": [2, 5, 14, 8], "texture": "#side", "tintindex": 0},
+        "south": {"uv": [2, 5, 14, 8], "texture": "#side", "tintindex": 0},
+        "west": {"uv": [2, 5, 14, 8], "texture": "#side", "tintindex": 0},
+        "up": {"uv": [2, 2, 14, 14], "texture": "#lid", "tintindex": 0},
+        "down": {"uv": [2, 2, 14, 14], "texture": "#lid", "tintindex": 0}
+      }
+    },
+    {
+      "from": [3, 0, 3],
+      "to": [13, 8, 13],
+      "faces": {
+        "north": {"uv": [3, 8, 13, 16], "texture": "#ribbon_side", "tintindex": 1},
+        "east": {"uv": [3, 8, 13, 16], "texture": "#ribbon_side", "tintindex": 1},
+        "south": {"uv": [3, 8, 13, 16], "texture": "#ribbon_side", "tintindex": 1},
+        "west": {"uv": [3, 8, 13, 16], "texture": "#ribbon_side", "tintindex": 1},
+        "up": {"uv": [3, 3, 13, 13], "texture": "#ribbon_lid", "tintindex": 1},
+        "down": {"uv": [3, 3, 13, 13], "texture": "#ribbon_lid", "tintindex": 1}
+      }
+    },
+    {
+      "from": [2.5, 8, 2.5],
+      "to": [13.5, 11, 13.5],
+      "faces": {
+        "north": {"uv": [2, 5, 14, 8], "texture": "#ribbon_side", "tintindex": 1},
+        "east": {"uv": [2, 5, 14, 8], "texture": "#ribbon_side", "tintindex": 1},
+        "south": {"uv": [2, 5, 14, 8], "texture": "#ribbon_side", "tintindex": 1},
+        "west": {"uv": [2, 5, 14, 8], "texture": "#ribbon_side", "tintindex": 1},
+        "up": {"uv": [2, 2, 14, 14], "texture": "#ribbon_lid", "tintindex": 1},
+        "down": {"uv": [2, 2, 14, 14], "texture": "#ribbon_lid", "tintindex": 1}
       }
     },
     {
@@ -36,8 +67,8 @@
         "rescale": true
       },
       "faces": {
-        "north": {"uv": [0, 0, 16, 5], "texture": "#side"},
-        "south": {"uv": [0, 0, 16, 5], "texture": "#side"}
+        "north": {"uv": [0, 0, 16, 5], "texture": "#ribbon_side", "tintindex": 1},
+        "south": {"uv": [0, 0, 16, 5], "texture": "#ribbon_side", "tintindex": 1}
       }
     },
     {
@@ -51,8 +82,8 @@
         "rescale": true
       },
       "faces": {
-        "east": {"uv": [0, 0, 16, 5], "texture": "#side"},
-        "west": {"uv": [0, 0, 16, 5], "texture": "#side"}
+        "east": {"uv": [0, 0, 16, 5], "texture": "#ribbon_side", "tintindex": 1},
+        "west": {"uv": [0, 0, 16, 5], "texture": "#ribbon_side", "tintindex": 1}
       }
     }
   ]

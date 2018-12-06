@@ -1,8 +1,9 @@
 package presents;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemColored;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -11,14 +12,18 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import presents.common.CommonEventHandler;
 import presents.common.CommonProxy;
+import presents.common.block.BlockColorHandler;
 import presents.common.block.BlockPresent;
 import presents.common.block.BlockPresentEmpty;
+import presents.common.item.ItemColorHandler;
 import presents.common.item.recipe.RecipePresent;
+import presents.common.item.recipe.RecipePresentDye;
 import presents.common.tileentity.TileEntityPresent;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
@@ -36,8 +41,8 @@ public class Presents {
     public static final Block PRESENT_BLOCK = new BlockPresent("present");
     public static final Block EMPTY_PRESENT_BLOCK = new BlockPresentEmpty("present_empty");
 
-    public static final Item PRESENT_ITEM = new ItemColored(PRESENT_BLOCK, true).setRegistryName("present");
-    public static final Item EMPTY_PRESENT_ITEM = new ItemColored(EMPTY_PRESENT_BLOCK, true).setRegistryName("present_empty");
+    public static final Item PRESENT_ITEM = new ItemBlock(PRESENT_BLOCK).setRegistryName("present");
+    public static final Item EMPTY_PRESENT_ITEM = new ItemBlock(EMPTY_PRESENT_BLOCK).setRegistryName("present_empty");
 
     public static final ResourceLocation LOOTTABLE_PRESENT_REGULAR = new ResourceLocation(MODID, "present_regular");
     public static final ResourceLocation LOOTTABLE_PRESENT_SPECIAL = new ResourceLocation(MODID, "present_special");
@@ -52,6 +57,12 @@ public class Presents {
     public void preInit(FMLPreInitializationEvent event) {
         LootTableList.register(LOOTTABLE_PRESENT_REGULAR);
         LootTableList.register(LOOTTABLE_PRESENT_SPECIAL);
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new BlockColorHandler(), PRESENT_BLOCK, EMPTY_PRESENT_BLOCK);
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorHandler(), PRESENT_BLOCK, EMPTY_PRESENT_BLOCK);
     }
 
     @net.minecraftforge.fml.common.Mod.EventBusSubscriber
@@ -70,7 +81,7 @@ public class Presents {
 
         @SubscribeEvent
         public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-            event.getRegistry().register(new RecipePresent());
+            event.getRegistry().registerAll(new RecipePresent(), new RecipePresentDye());
         }
 
         @SubscribeEvent

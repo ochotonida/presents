@@ -1,6 +1,0 @@
-{
-  "parent": "presents:block/empty_present",
-  "textures": {
-    "all": "presents:blocks/present_empty_black"
-  }
-}

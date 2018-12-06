@@ -12,13 +12,12 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.EnumFacing;
@@ -40,20 +39,31 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@SuppressWarnings("WeakerAccess")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TileEntityPresent extends TileEntity implements IInventory {
+public class TileEntityPresent extends TileEntityPresentEmpty implements IInventory {
 
-    protected ResourceLocation lootTable;
-    protected long lootTableSeed;
+    private ResourceLocation lootTable;
 
-    protected NonNullList<ItemStack> inventory;
+    private long lootTableSeed;
 
-    protected NBTTagCompound fireworks;
+    private NonNullList<ItemStack> inventory;
+
+    private NBTTagCompound fireworks;
+
+    private int ribbonColor = EnumDyeColor.WHITE.getColorValue();
+
+    public void setRibbonColor(int color) {
+        ribbonColor = color;
+        markDirty();
+    }
 
     public TileEntityPresent() {
         inventory = NonNullList.withSize(8, ItemStack.EMPTY);
+    }
+
+    public int getRibbonColor() {
+        return ribbonColor;
     }
 
     public void setLootTable(ResourceLocation lootTable, long lootTableSeed) {
@@ -62,7 +72,7 @@ public class TileEntityPresent extends TileEntity implements IInventory {
         markDirty();
     }
 
-    public void fillWithLoot(@Nullable EntityPlayer player) {
+    private void fillWithLoot(@Nullable EntityPlayer player) {
         if (this.lootTable != null) {
             LootTable loottable = this.world.getLootTableManager().getLootTableFromLocation(this.lootTable);
             this.lootTable = null;
@@ -144,6 +154,8 @@ public class TileEntityPresent extends TileEntity implements IInventory {
             compound.setLong("LootTableSeed", lootTableSeed);
         }
 
+        compound.setInteger("RibbonColor", ribbonColor);
+
         return super.writeToNBT(compound);
     }
 
@@ -162,27 +174,10 @@ public class TileEntityPresent extends TileEntity implements IInventory {
             lootTable = new ResourceLocation(compound.getString("LootTable"));
             lootTableSeed = compound.getLong("LootTableSeed");
         }
-    }
 
-    private void notifyBlockUpdate() {
-        final IBlockState state = getWorld().getBlockState(getPos());
-        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        notifyBlockUpdate();
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(getPos(), 0, getUpdateTag());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-        handleUpdateTag(packet.getNbtCompound());
+        if (compound.hasKey("RibbonColor")) {
+            ribbonColor = compound.getInteger("RibbonColor");
+        }
     }
 
     @Override
@@ -201,6 +196,8 @@ public class TileEntityPresent extends TileEntity implements IInventory {
             updateTag.setLong("LootTableSeed", lootTableSeed);
         }
 
+        updateTag.setInteger("RibbonColor", ribbonColor);
+
         return updateTag;
     }
 
@@ -213,6 +210,10 @@ public class TileEntityPresent extends TileEntity implements IInventory {
         if (updateTag.hasKey("LootTable")) {
             lootTable = new ResourceLocation(updateTag.getString("LootTable"));
             lootTableSeed = updateTag.getLong("LootTableSeed");
+        }
+        if (updateTag.hasKey("RibbonColor")) {
+            ribbonColor = updateTag.getInteger("RibbonColor");
+            getWorld().markBlockRangeForRenderUpdate(pos, pos);
         }
     }
 
@@ -301,7 +302,7 @@ public class TileEntityPresent extends TileEntity implements IInventory {
 
         private final TileEntityDispenser dispenser;
 
-        public VirtualDispenser(BlockPos pos, World world, ItemStack stack) {
+        VirtualDispenser(BlockPos pos, World world, ItemStack stack) {
             this.pos = pos;
             this.world = world;
             this.dispenser = new TileEntityDispenser();
