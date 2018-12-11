@@ -93,7 +93,6 @@ public class RecipePresent extends net.minecraftforge.registries.IForgeRegistryE
             blockEntityTag.setTag("Explosion", fireworks.copy());
         }
 
-        System.out.println("d");
         return true;
     }
 
