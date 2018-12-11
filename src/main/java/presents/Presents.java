@@ -62,8 +62,7 @@ public class Presents {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new BlockColorHandler(), PRESENT_BLOCK, EMPTY_PRESENT_BLOCK);
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorHandler(), PRESENT_BLOCK, EMPTY_PRESENT_BLOCK);
+        proxy.init(event);
     }
 
     @net.minecraftforge.fml.common.Mod.EventBusSubscriber
