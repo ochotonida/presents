@@ -48,7 +48,7 @@ public class BlockPresent extends BlockPresentEmpty implements ITileEntityProvid
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityPresent) {
-            ((TileEntityPresent) tileEntity).spawnItems(world, pos, null);
+            ((TileEntityPresent) tileEntity).spawnItems(null);
         }
         super.breakBlock(world, pos, state);
     }
@@ -57,7 +57,7 @@ public class BlockPresent extends BlockPresentEmpty implements ITileEntityProvid
     public boolean addDestroyEffects(World world, BlockPos pos, net.minecraft.client.particle.ParticleManager manager) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityPresent) {
-            return ((TileEntityPresent) tileEntity).makeFireworks(world, pos);
+            return ((TileEntityPresent) tileEntity).makeFireworks();
         }
         return false;
     }
