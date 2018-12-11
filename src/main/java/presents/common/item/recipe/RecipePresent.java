@@ -33,7 +33,7 @@ public class RecipePresent extends net.minecraftforge.registries.IForgeRegistryE
         NBTTagCompound fireworks = null;
         int tntAmount = 0;
 
-        NonNullList<ItemStack> presentLoot = NonNullList.withSize(8, ItemStack.EMPTY);
+        NonNullList<ItemStack> presentLoot = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
         int listIndex = 0;
 
         for (int i = 0; i < inv.getSizeInventory(); i++) {
@@ -93,6 +93,7 @@ public class RecipePresent extends net.minecraftforge.registries.IForgeRegistryE
             blockEntityTag.setTag("Explosion", fireworks.copy());
         }
 
+        System.out.println("d");
         return true;
     }
 
