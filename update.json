@@ -4,10 +4,11 @@
     "1.12.2-1.0.0": "initial release 🎁",
     "1.12.2-1.1.0": "presents now generate in cold biomes, updated wrapped present textures, reduced maximal amount of tnt in a (crafted) present to 1",
     "1.12.2-1.2.0": "empty presents and presents can now be crafted with dye to change their color/ribbon color,\ntweaked worldgen a bit",
-    "1.12.2-1.2.1": "added fancy tnt effect"
+    "1.12.2-1.2.1": "added fancy tnt effect",
+    "1.12.2-1.3.0": "fixed a bug randomly breaking recipes,\nfixed a bug crashing servers,\npotion effects now spawn immediately instead of being launched upwards"
   },
   "promos": {
-    "1.12.2-latest": "1.2.0",
-    "1.12.2-recommended": "1.2.1"
+    "1.12.2-latest": "1.3.0",
+    "1.12.2-recommended": "1.3.0"
   }
 }
