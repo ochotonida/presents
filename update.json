@@ -7,10 +7,11 @@
     "1.12.2-1.2.1": "added fancy tnt effect",
     "1.12.2-1.3.0": "fixed a bug randomly breaking recipes,\nfixed a bug crashing servers,\npotion effects now spawn immediately instead of being launched upwards",
     "1.12.2-1.3.1": "no longer prints 'd' in console every time a recipe matches that of a wrapped present",
-    "1.12.2-1.3.2": "fixed worldgen crashes on servers,\nfixed present coloring not working on servers"
+    "1.12.2-1.3.2": "fixed worldgen crashes on servers,\nfixed present coloring not working on servers",
+    "1.12.2-1.3.3": "added config with option for world gen chance,\ndecreased chance for cake in generated presents"
   },
   "promos": {
-    "1.12.2-latest": "1.3.2",
-    "1.12.2-recommended": "1.3.2"
+    "1.12.2-latest": "1.3.3",
+    "1.12.2-recommended": "1.3.3"
   }
 }

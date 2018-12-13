@@ -33,7 +33,7 @@ public class Presents {
 
     public static final String MODID = "presents";
     public static final String MODNAME = "Presents";
-    public static final String MODVERSION = "1.12.2-1.3.2";
+    public static final String MODVERSION = "1.12.2-1.3.3";
 
     public static final Block PRESENT_BLOCK = new BlockPresent("present");
     public static final Block EMPTY_PRESENT_BLOCK = new BlockPresentEmpty("present_empty");
