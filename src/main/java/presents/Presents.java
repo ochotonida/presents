@@ -1,7 +1,6 @@
 package presents;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
@@ -18,10 +17,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import presents.common.CommonEventHandler;
 import presents.common.CommonProxy;
-import presents.common.block.BlockColorHandler;
 import presents.common.block.BlockPresent;
 import presents.common.block.BlockPresentEmpty;
-import presents.common.item.ItemColorHandler;
 import presents.common.item.recipe.RecipePresent;
 import presents.common.item.recipe.RecipePresentDye;
 import presents.common.tileentity.TileEntityPresent;
@@ -36,7 +33,7 @@ public class Presents {
 
     public static final String MODID = "presents";
     public static final String MODNAME = "Presents";
-    public static final String MODVERSION = "1.12.2-1.3.1";
+    public static final String MODVERSION = "1.12.2-1.3.2";
 
     public static final Block PRESENT_BLOCK = new BlockPresent("present");
     public static final Block EMPTY_PRESENT_BLOCK = new BlockPresentEmpty("present_empty");
