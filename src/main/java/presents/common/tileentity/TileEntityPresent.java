@@ -6,16 +6,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.entity.EntityAreaEffectCloud;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -23,14 +17,9 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionType;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -43,10 +32,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import presents.Presents;
 import presents.common.entity.EntityPresentPrimed;
+import presents.common.misc.PotionHelper;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
 import java.util.Random;
 
 @MethodsReturnNonnullByDefault
@@ -136,82 +125,11 @@ public class TileEntityPresent extends TileEntityPresentEmpty implements IInvent
                     world.spawnEntity(presentPrimed);
                     world.playSound(null, presentPrimed.posX, presentPrimed.posY, presentPrimed.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 } else if (stack.getItem() instanceof ItemLingeringPotion || stack.getItem() instanceof ItemSplashPotion) {
-                    spawnPotion(stack);
+                    PotionHelper.spawnPotion(stack, world, pos);
                 } else {
                     InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
                 }
             }
-        }
-    }
-
-    private void spawnPotion(ItemStack stack) {
-        if (!world.isRemote) {
-            PotionType potiontype = PotionUtils.getPotionFromItem(stack);
-            List<PotionEffect> list = PotionUtils.getEffectsFromStack(stack);
-            AxisAlignedBB boundingBox = new AxisAlignedBB(pos.getX() + 0.5 - 2, pos.getY() + 0.5 - 1, pos.getZ() + 0.5 - 2, pos.getX() + 0.5 + 2, pos.getY() + 0.5 + 1, pos.getZ() + 0.5 + 2);
-
-            if (potiontype == PotionTypes.WATER && list.isEmpty()) {
-                List<EntityLivingBase> entities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, boundingBox, EntityPotion.WATER_SENSITIVE);
-
-                if (!entities.isEmpty()) {
-                    for (EntityLivingBase entity : entities) {
-                        if (getDistanceSq(entity.posX, entity.posY, entity.posZ) < 16 && (entity instanceof EntityEnderman || entity instanceof EntityBlaze)) {
-                            entity.attackEntityFrom(DamageSource.DROWN, 1.0F);
-                        }
-                    }
-                }
-            } else if (!list.isEmpty()) {
-                if (stack.getItem() instanceof ItemLingeringPotion) {
-                    EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-                    entityareaeffectcloud.setRadius(3.0F);
-                    entityareaeffectcloud.setRadiusOnUse(-0.5F);
-                    entityareaeffectcloud.setWaitTime(10);
-                    entityareaeffectcloud.setRadiusPerTick(- entityareaeffectcloud.getRadius() / (float)entityareaeffectcloud.getDuration());
-                    entityareaeffectcloud.setPotion(potiontype);
-
-                    for (PotionEffect potioneffect : PotionUtils.getFullEffectsFromItem(stack)) {
-                        entityareaeffectcloud.addEffect(new PotionEffect(potioneffect));
-                    }
-
-                    NBTTagCompound nbttagcompound = stack.getTagCompound();
-
-                    if (nbttagcompound != null && nbttagcompound.hasKey("CustomPotionColor", 99))
-                    {
-                        entityareaeffectcloud.setColor(nbttagcompound.getInteger("CustomPotionColor"));
-                    }
-
-                    this.world.spawnEntity(entityareaeffectcloud);
-                } else {
-                    List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, boundingBox);
-
-                    for (EntityLivingBase entity : entities) {
-                        if (entity.canBeHitWithPotion()) {
-                            double distance = getDistanceSq(entity.posX, entity.posY, entity.posZ);
-
-                            if (distance < 16) {
-                                double health = 1 - Math.sqrt(distance) / 4D;
-
-                                for (PotionEffect potioneffect : list) {
-                                    Potion potion = potioneffect.getPotion();
-
-                                    if (potion.isInstant()) {
-                                        potion.affectEntity(null, null, entity, potioneffect.getAmplifier(), health);
-                                    } else {
-                                        int time = (int)(health * (double) potioneffect.getDuration() + 0.5);
-
-                                        if (time > 20) {
-                                            entity.addPotionEffect(new PotionEffect(potion, time, potioneffect.getAmplifier(), potioneffect.getIsAmbient(), potioneffect.doesShowParticles()));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            int i = potiontype.hasInstantEffect() ? 2007 : 2002;
-            this.world.playEvent(i, getPos(), PotionUtils.getColor(stack));
         }
     }
 
