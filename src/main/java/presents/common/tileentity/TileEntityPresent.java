@@ -19,7 +19,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -50,7 +53,7 @@ public class TileEntityPresent extends TileEntityPresentEmpty implements IInvent
 
     private NBTTagCompound fireworks;
 
-    private int ribbonColor = EnumDyeColor.WHITE.getColorValue();
+    private int ribbonColor = 16383998;
 
     public void setRibbonColor(int color) {
         ribbonColor = color;

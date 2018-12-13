@@ -2,7 +2,6 @@ package presents.common.item;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -27,6 +26,6 @@ public class ItemColorHandler implements IItemColor {
                 }
             }
         }
-        return EnumDyeColor.WHITE.getColorValue();
+        return 16383998;
     }
 }

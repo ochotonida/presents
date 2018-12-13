@@ -2,7 +2,6 @@ package presents.common.tileentity;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -14,7 +13,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class TileEntityPresentEmpty extends TileEntity {
 
-    private int color = EnumDyeColor.WHITE.getColorValue();
+    private int color = 16383998;
 
     public void setColor(int color) {
         this.color = color;

@@ -1,12 +1,8 @@
 package presents.common.item.recipe;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +12,8 @@ import presents.common.block.BlockPresent;
 import presents.common.block.BlockPresentEmpty;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
+import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -63,7 +61,7 @@ public class RecipePresentDye extends net.minecraftforge.registries.IForgeRegist
                     presentStack.setCount(1);
 
                     int colour = getColor(presentStack);
-                    if (colour != EnumDyeColor.WHITE.getColorValue()) {
+                    if (colour != 16383998) {
                         float red = (float)(colour >> 16 & 255) / 255.0F;
                         float green = (float)(colour >> 8 & 255) / 255.0F;
                         float blue = (float)(colour & 255) / 255.0F;
@@ -116,12 +114,12 @@ public class RecipePresentDye extends net.minecraftforge.registries.IForgeRegist
         if (compound != null && compound.hasKey("BlockEntityTag")) {
             compound = compound.getCompoundTag("BlockEntityTag");
             if (Block.getBlockFromItem(stack.getItem()) instanceof BlockPresent) {
-                return compound.hasKey("RibbonColor") ? compound.getInteger("RibbonColor") : EnumDyeColor.WHITE.getColorValue();
+                return compound.hasKey("RibbonColor") ? compound.getInteger("RibbonColor") : 16383998;
             } else if (Block.getBlockFromItem(stack.getItem()) instanceof BlockPresentEmpty) {
-                return compound.hasKey("Color") ? compound.getInteger("Color") : EnumDyeColor.WHITE.getColorValue();
+                return compound.hasKey("Color") ? compound.getInteger("Color") : 16383998;
             }
         }
-        return EnumDyeColor.WHITE.getColorValue();
+        return 16383998;
     }
 
     private static void setColor(ItemStack stack, int color) {
