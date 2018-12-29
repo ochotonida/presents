@@ -1,5 +1,6 @@
 package presents.common;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
@@ -7,6 +8,8 @@ import net.minecraft.world.gen.feature.WorldGenTaiga1;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import presents.Presents;
 import presents.common.world.gen.WorldGenPresentTree;
 
 public class CommonEventHandler {
@@ -28,6 +31,22 @@ public class CommonEventHandler {
                     worldgenabstracttree.generateSaplings(event.getWorld(), event.getRand(), blockpos);
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
+        if (event.crafting.getItem() == Presents.PRESENT_ITEM && event.player != null) {
+            NBTTagCompound tagCompound = event.crafting.getTagCompound();
+            if (tagCompound == null) {
+                tagCompound = new NBTTagCompound();
+                event.crafting.setTagCompound(tagCompound);
+            }
+            if (!tagCompound.hasKey("BlockEntityTag")) {
+                tagCompound.setTag("BlockEntityTag", new NBTTagCompound());
+            }
+            tagCompound.getCompoundTag("BlockEntityTag").setString("PlayerName", event.player.getDisplayNameString());
         }
     }
 }

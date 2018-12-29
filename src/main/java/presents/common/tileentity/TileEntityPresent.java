@@ -47,6 +47,8 @@ public class TileEntityPresent extends TileEntityPresentEmpty implements IInvent
 
     private ResourceLocation lootTable;
 
+    private String playerName;
+
     private long lootTableSeed;
 
     private NonNullList<ItemStack> inventory;
@@ -167,6 +169,10 @@ public class TileEntityPresent extends TileEntityPresentEmpty implements IInvent
 
         compound.setInteger("RibbonColor", ribbonColor);
 
+        if (playerName != null) {
+            compound.setString("PlayerName", playerName);
+        }
+
         return super.writeToNBT(compound);
     }
 
@@ -188,6 +194,10 @@ public class TileEntityPresent extends TileEntityPresentEmpty implements IInvent
 
         if (compound.hasKey("RibbonColor")) {
             ribbonColor = compound.getInteger("RibbonColor");
+        }
+
+        if (compound.hasKey("PlayerName")) {
+            playerName = compound.getString("PlayerName");
         }
     }
 

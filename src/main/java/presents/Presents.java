@@ -29,6 +29,7 @@ public class Presents {
 
     public Presents() {
         MinecraftForge.TERRAIN_GEN_BUS.register(CommonEventHandler.class);
+        MinecraftForge.EVENT_BUS.register(CommonEventHandler.class);
     }
 
     public static final String MODID = "presents";
